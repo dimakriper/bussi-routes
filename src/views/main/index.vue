@@ -11,7 +11,7 @@ import MapContainer from "@/components/MapContainer";
 import {BusStopMap} from "@/leaflet-map/bussi-routes-map";
 
 export default {
-  name: "index",
+  name: "Main",
   components: {MapContainer, Sidebar},
   data(){
     return {
@@ -29,6 +29,7 @@ FIne with Flexbox API but why not Grid?
   display: flex;
   flex-direction: row;
   height: 100vh;
+  padding-top: 10px;
 }
 .map-flex-3{
   flex: 3;

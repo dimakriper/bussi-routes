@@ -13,9 +13,9 @@ const BASE_ATTRIBUTION = "\"Map data &copy; <a href='http://probki.net/b2b'>Geop
 export class BaseMap {
     init(el, options) {
         const center = options?.center ?? store.getters.getMapCenter
-        const zoom = options?.zoom ?? 7
-        const minZoom = options?.minZoom ?? 2
-        const maxZoom = options?.maxZoom ?? 20
+        const zoom = options?.zoom ?? 8
+        const minZoom = options?.minZoom ?? 5
+        const maxZoom = options?.maxZoom ?? 19
         this.currentMapsURL = options?.url ?? BASE_URL; // in case if it can be changed
 
         this.map = L.map(el).setView(center, zoom);
