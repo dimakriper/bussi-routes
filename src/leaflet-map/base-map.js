@@ -7,8 +7,8 @@ Only tile layer
 import L from 'leaflet';
 import store from "@/store";
 
-const BASE_URL = "http://api.probki.net/map/{z}/{x}/{y}"
-const BASE_ATTRIBUTION = "\"Map data &copy; <a href='http://probki.net/b2b'>Geophone OY</a>"
+const BASE_URL = "https://tile.openstreetmap.org/{z}/{x}/{y}.png"
+const BASE_ATTRIBUTION = '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
 
 export class BaseMap {
     init(el, options) {
