@@ -12,7 +12,7 @@ const BASE_ATTRIBUTION = '&copy; <a href="http://www.openstreetmap.org/copyright
 
 export class BaseMap {
     init(el, options) {
-        const center = options?.center ?? store.getters.getMapCenter
+        const center = options?.center ?? store.getters.mapCenter
         const zoom = options?.zoom ?? 8
         const minZoom = options?.minZoom ?? 5
         const maxZoom = options?.maxZoom ?? 19

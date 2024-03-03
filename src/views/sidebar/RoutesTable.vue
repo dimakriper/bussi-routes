@@ -1,17 +1,16 @@
 <template>
 
-  <div style="display: flex; flex-direction: row; height: 100%;">
-    <div style=" overflow: hidden; flex-grow: 1">
+  <div style="height: 90vh">
       <ag-grid-vue
-          style="width: 100%; "
+          style="width: 100%; height: 100%"
           :class="themeClass"
           :columnDefs="columnDefs"
           @grid-ready="onGridReady"
           :rowData="rowData"
           :autoSizeStrategy="autoSizeStrategy"
-          domLayout='autoHeight'
+          rowSelection='single'
+          @rowSelected=onRowSelected
       ></ag-grid-vue>
-    </div>
   </div>
 
 </template>
@@ -20,33 +19,41 @@
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-quartz.css";
 import { AgGridVue } from "ag-grid-vue";
+import {eventBus} from "@/main";
 
 export default {
-  name: "TableAdGrid",
+  name: "RoutesTable",
   components: {
     "ag-grid-vue": AgGridVue,
   },
   data: function () {
     return {
-      columnDefs: [{ field: "make" }, { field: "model" }, { field: "price" }],
+      columnDefs: [{ field: "Description", headerName: 'Маршрут' }],
+      rowData : null,
       gridApi: null,
       themeClass: "ag-theme-quartz",
-
-      rowData: null,
       autoSizeStrategy: null,
     };
   },
   created() {
-    this.rowData = [
-      { make: "Toyota", model: "Celica", price: 35000 },
-      { make: "Ford", model: "Mondeo", price: 32000 },
-      { make: "Porsche", model: "Boxster", price: 72000 },
-    ];
     this.autoSizeStrategy = {
       type: "fitGridWidth",
     };
   },
+  mounted() {
+    /*computed property will not detect array change so getting table data imperatively is better approach*/
+    this.rowData = this.$store.state.busRoutes;
+  },
   methods: {
+    onRowSelected(event) {
+      const id = event.node.data.ID;
+      if (event.node.selected){
+        eventBus.$emit('route-selected-from-table', id);
+      }
+      else {
+        eventBus.$emit('route-deselected-from-table', id);
+      }
+    },
     onGridReady(params) {
       this.gridApi = params.api;
 

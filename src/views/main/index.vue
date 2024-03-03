@@ -26,13 +26,18 @@ export default {
       return this.$store.state.isReady;
     }
   },
-  mounted() {
-    this.$store.dispatch("getRoutes")
+  created() {
+    if (this.$store.state.busRoutes.length > 0){
+      this.$store.commit('setReadyStatus', true);
+    }
+    else {
+      this.$store.dispatch("getRoutes")
+    }
   }
 }
 </script>
 
-<style scoped>
+<style >
 /*
 FIne with Flexbox API but why not Grid?
 */

@@ -13,9 +13,15 @@ const initialState = {
 export default new Vuex.Store({
   state: initialState,
   getters: {
-    getMapCenter: state => {
+    mapCenter: state => {
       return [state.mapCenter.lat, state.mapCenter.lon];
-    }
+    },
+    busStops: state => {
+      return state.busRoutes.flatMap((route) => (route.Stops))
+    },
+    routeById: (state) => (id) => {
+      return state.busRoutes.find( (route) => route.ID === id);
+    },
   },
   mutations: {
     setBusRoutes(state, payload){
