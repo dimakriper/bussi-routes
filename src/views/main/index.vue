@@ -1,7 +1,10 @@
 <template>
-  <div id=main-window>
-     <sidebar class="sidebar-flex-1"></sidebar>
-     <map-container class="map-flex-3" :map=lMap></map-container>
+  <div>
+    <loader v-if="!dataIsLoaded" object="#ff9633" color1="#ffffff" color2="#17fd3d" size="5" speed="2" bg="#343a40" objectbg="#999793" opacity="80" name="circular"></loader>
+    <div v-else-if="dataIsLoaded" id=main-window>
+      <sidebar class="sidebar-flex-1"></sidebar>
+      <map-container class="map-flex-3" :map=lMap></map-container>
+    </div>
   </div>
 </template>
 
@@ -17,6 +20,14 @@ export default {
     return {
       lMap : new BusStopMap(),
     }
+  },
+  computed: {
+    dataIsLoaded(){
+      return this.$store.state.isReady;
+    }
+  },
+  mounted() {
+    this.$store.dispatch("getRoutes")
   }
 }
 </script>
