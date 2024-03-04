@@ -8,6 +8,7 @@
   },
   "dependencies": {
     "ag-grid-vue": "^31.1.1",
+    "ag-grid-enterprise": "~31.1.1",
     "axios": "^1.6.7",
     "bootstrap": "^5.3.3",
     "core-js": "^3.8.3",

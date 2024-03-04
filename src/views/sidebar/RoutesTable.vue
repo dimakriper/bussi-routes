@@ -1,6 +1,6 @@
 <template>
 
-  <div style="height: 90vh">
+  <div style="height: 80vh">
       <ag-grid-vue
           style="width: 100%; height: 100%"
           :class="themeClass"
@@ -16,8 +16,9 @@
 </template>
 
 <script>
-import "ag-grid-community/styles/ag-grid.css";
-import "ag-grid-community/styles/ag-theme-quartz.css";
+import 'ag-grid-community/styles/ag-grid.css';
+import 'ag-grid-community/styles/ag-theme-quartz.css';
+import 'ag-grid-enterprise';
 import { AgGridVue } from "ag-grid-vue";
 import {eventBus} from "@/main";
 
@@ -43,6 +44,9 @@ export default {
   mounted() {
     /*computed property will not detect array change so getting table data imperatively is better approach*/
     this.rowData = this.$store.state.busRoutes;
+  },
+  beforeDestroy() {
+    eventBus.$emit('clear-map')
   },
   methods: {
     onRowSelected(event) {

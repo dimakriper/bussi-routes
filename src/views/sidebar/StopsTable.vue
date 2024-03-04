@@ -17,8 +17,9 @@
 </template>
 
 <script>
-import "ag-grid-community/styles/ag-grid.css";
-import "ag-grid-community/styles/ag-theme-quartz.css";
+import 'ag-grid-community/styles/ag-grid.css';
+import 'ag-grid-community/styles/ag-theme-quartz.css';
+import 'ag-grid-enterprise';
 import { AgGridVue } from "ag-grid-vue";
 import {eventBus} from "@/main";
 
@@ -44,9 +45,11 @@ export default {
   },
   mounted() {
     /*computed property will not detect array change so getting table data imperatively is better approach*/
-    eventBus.$emit('show-all-stops');
     this.rowData = this.$store.getters.busStops;
 
+  },
+  beforeDestroy() {
+    eventBus.$emit('clear-map')
   },
   methods: {
     onRowSelected(event) {
@@ -57,10 +60,11 @@ export default {
     },
     onGridReady(params) {
       this.gridApi = params.api;
-
+      eventBus.$emit('show-all-stops')
       window.addEventListener("resize", () => {
         setTimeout(() => {
           params.api.sizeColumnsToFit();
+
         });
       });
     },

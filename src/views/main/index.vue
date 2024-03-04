@@ -12,6 +12,7 @@
 import Sidebar from "@/views/sidebar";
 import MapContainer from "@/components/MapContainer";
 import {BusStopMap} from "@/leaflet-map/bussi-routes-map";
+import {eventBus} from "@/main";
 
 export default {
   name: "Main",
@@ -33,7 +34,7 @@ export default {
     else {
       this.$store.dispatch("getRoutes")
     }
-  }
+  },
 }
 </script>
 

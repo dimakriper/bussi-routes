@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 import Main from "@/views/main";
 import RoutesTable from "@/views/sidebar/RoutesTable";
 import StopsTable from "@/views/sidebar/StopsTable";
+import {eventBus} from "@/main";
 
 Vue.use(VueRouter)
 
@@ -33,5 +34,7 @@ const router = new VueRouter({
   mode: "history",
   routes
 })
+
+
 
 export default router

@@ -33,7 +33,12 @@ export class BusStopMap extends BaseMap{
         });
         eventBus.$off('pan-to-stop');
         eventBus.$on('pan-to-stop', (id)=> {
-            this.getStopById(id);
+            const marker = this.getStopById(id);
+            this.panToPoint(marker.marker.getLatLng());
+        });
+        eventBus.$off('clear-map');
+        eventBus.$on('clear-map', (id)=> {
+            this.clearMap();
         });
     }
     async onRouteSelected(id){
@@ -69,7 +74,7 @@ export class BusStopMap extends BaseMap{
         }
         this.Routes.push(currentRoute);
     }
-    removeRoutes(ids=[]){
+    async removeRoutes(ids=[]){
         let rmIndexes = []
         if (ids.length > 0){
             this.Routes.forEach(rt => {
@@ -133,5 +138,11 @@ export class BusStopMap extends BaseMap{
     }
     panToPoint(ltl){
         this.map.setView(ltl, 17)
+    }
+    async clearMap(){
+        await this.removeRoutes()
+        await this.removeStops();
+        this.stopMarkersLG.clearLayers();
+        this.routesLG.clearLayers();
     }
 }
