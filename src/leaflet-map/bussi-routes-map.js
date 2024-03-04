@@ -125,7 +125,7 @@ export class BusStopMap extends BaseMap{
             const point = e.latlng
             this.panToPoint([point.lat, point.lng])
         })
-        this.Stops.push({stop: stop, marker: stopMarker})
+        this.Stops.push({stop: {ID: stop.ID, RouteID: stop.RouteID}, marker: stopMarker})
     }
     getStopById(id){
         let stop = this.Stops.find((item) => item.stop.ID === id)

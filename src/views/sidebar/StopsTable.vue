@@ -1,6 +1,6 @@
 <template>
 
-  <div style="height: 90vh">
+  <div style="height: 80vh">
     <ag-grid-vue
         style="width: 100%; height: 100%"
         :class="themeClass"
@@ -30,7 +30,7 @@ export default {
   data: function () {
     return {
       columnDefs: [{ field: "Name", headerName: 'Остановка'}],
-      rowData : this.$store.getters.busStops,
+      rowData : null,
 
       gridApi: null,
       themeClass: "ag-theme-quartz",
@@ -45,6 +45,8 @@ export default {
   mounted() {
     /*computed property will not detect array change so getting table data imperatively is better approach*/
     eventBus.$emit('show-all-stops');
+    this.rowData = this.$store.getters.busStops;
+
   },
   methods: {
     onRowSelected(event) {
