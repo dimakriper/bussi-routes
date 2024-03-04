@@ -16,9 +16,10 @@ export class BaseMap {
         const zoom = options?.zoom ?? 8
         const minZoom = options?.minZoom ?? 5
         const maxZoom = options?.maxZoom ?? 19
+        const preferCanvas = false;
         this.currentMapsURL = options?.url ?? BASE_URL; // in case if it can be changed
 
-        this.map = L.map(el).setView(center, zoom);
+        this.map = L.map(el, {preferCanvas: preferCanvas}).setView(center, zoom);
 
         this.mainLayer = L.tileLayer(this.currentMapsURL, {
             minZoom: minZoom,

@@ -25,20 +25,19 @@ export class BusStopMap extends BaseMap{
         eventBus.$off('route-deselected-from-table');
         eventBus.$on('route-deselected-from-table', (id)=> {
             this.removeRoutes([id]);
-            this.removeStops([id]);
+            this.removeStops([id])
         });
-        // eventBus.$off('show-all-stops');
-        // eventBus.$on('show-all-stops', ()=> {
-        //     this.showAllStops();
-        // });
-        // eventBus.$off('pan-to-stop');
-        // eventBus.$on('pan-to-stop', (id)=> {
-        //     this.panToStop(id);
-        // });
+        eventBus.$off('show-all-stops');
+        eventBus.$on('show-all-stops', ()=> {
+            this.showAllStops();
+        });
+        eventBus.$off('pan-to-stop');
+        eventBus.$on('pan-to-stop', (id)=> {
+            this.getStopById(id);
+        });
     }
-    onRouteSelected(id){
-        // this.clearLayers();
-
+    async onRouteSelected(id){
+        await this.removeStops()
         const route = store.getters.routeById(id);
         let currentRoute = {route: route, layers: {forward: null, backward: null}}
 
@@ -46,9 +45,7 @@ export class BusStopMap extends BaseMap{
         const routeStops = route.Stops;
 
         routeStops.forEach(pt => {
-            const stopMarker = busStops.createStopMarker(pt);
-            stopMarker.addTo(this.stopMarkersLG);
-            this.Stops.push({stop: pt, marker: stopMarker})
+            this.addStopMarker(pt)
         })
 
         //creating route polylines
@@ -71,11 +68,6 @@ export class BusStopMap extends BaseMap{
             currentRoute.layers.backward = routeBackward
         }
         this.Routes.push(currentRoute);
-
-    }
-    clearLayers(){
-        this.routesLG.clearLayers();
-        this.stopMarkersLG.clearLayers();
     }
     removeRoutes(ids=[]){
         let rmIndexes = []
@@ -98,25 +90,48 @@ export class BusStopMap extends BaseMap{
         rmIndexes.forEach(index => {
             this.Routes.splice(index, 1);
         })
-
     }
-    removeStops(routeIds=[]){
+    async removeStops(routeIds=[]){
         let rmIndexes = []
         if (routeIds.length > 0){
             this.Stops.forEach(pt => {
-                if (routeIds.includes(pt.stop.routeID)){
+                if (routeIds.includes(pt.stop.RouteID)){
                     pt.marker.removeFrom(this.stopMarkersLG);
                     rmIndexes.push(this.Stops.indexOf(pt))
                 }
             })
         }
-        this.Stops.forEach(pt => {
-            pt.marker.removeFrom(this.stopMarkersLG);
-            rmIndexes.push(this.Stops.indexOf(pt))
-        })
+        else{
+            this.Stops.forEach(pt => {
+                pt.marker.removeFrom(this.stopMarkersLG);
+                rmIndexes.push(this.Stops.indexOf(pt))
+            })
+        }
         rmIndexes.forEach(index => {
             this.Stops.splice(index, 1);
         })
-
+    }
+    async showAllStops(){
+        await this.removeStops();
+        const stops = store.getters.busStops;
+        stops.forEach(stop => {
+            this.addStopMarker(stop);
+        })
+    }
+    addStopMarker(stop){
+        const stopMarker = busStops.createStopMarker(stop);
+        stopMarker.addTo(this.stopMarkersLG);
+        stopMarker.on('click', e => {
+            const point = e.latlng
+            this.panToPoint([point.lat, point.lng])
+        })
+        this.Stops.push({stop: stop, marker: stopMarker})
+    }
+    getStopById(id){
+        let stop = this.Stops.find((item) => item.stop.ID === id)
+        return stop
+    }
+    panToPoint(ltl){
+        this.map.setView(ltl, 17)
     }
 }

@@ -1,30 +1,23 @@
 <template>
   <div >
-    <ul class="nav justify-content-center nav-pills mb-3" id="pills-tab" role="tablist">
-      <li class="nav-item" role="presentation">
-        <button class="nav-link active" id="pills-routes-tab" data-bs-toggle="pill" data-bs-target="#pills-routes" type="button" role="tab" aria-controls="pills-routes" aria-selected="true">Маршруты</button>
-      </li>
-      <li class="nav-item" role="presentation">
-        <button class="nav-link" id="pills-bus-stops-tab" data-bs-toggle="pill" data-bs-target="#pills-bus-stops" type="button" role="tab" aria-controls="pills-bus-stops" aria-selected="false">Остановки</button>
-      </li>
-    </ul>
-    <div class="tab-content" id="pills-tabContent">
-      <div class="tab-pane fade show active" id="pills-routes" role="tabpanel" aria-labelledby="pills-routes-tab">
-        <routes-table></routes-table>
-      </div>
-      <div class="tab-pane fade" id="pills-bus-stops" role="tabpanel" aria-labelledby="pills-bus-stops-tab">
-        <routes-table></routes-table>
-      </div>
+    <div>
+      <ul class="nav nav-tabs mb-5">
+        <li class="nav-item">
+          <router-link :to="{name: 'routes'}" class="nav-link" :active-class="'active'" :tag="'a'">Маршруты</router-link>
+        </li>
+        <li class="nav-item">
+          <router-link :to="{name: 'stops'}" class="nav-link" :active-class="'active'" :tag="'a'">Остановки</router-link>
+        </li>
+      </ul>
     </div>
+    <router-view name="sidebarView"></router-view>
   </div>
 </template>
 
 <script>
-import RoutesTable from "@/views/sidebar/RoutesTable";
 
 export default {
   name: "Sidebar",
-  components: {RoutesTable},
   data(){
     return {
 
